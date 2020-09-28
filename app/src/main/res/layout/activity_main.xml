@@ -1,102 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_login"
-    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingLeft="28dp"
-    android:paddingRight="28dp"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="32dp"
-        android:src="@mipmap/ic_launcher" />
-
-    <EditText
-        android:layout_marginTop="28dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_edittext_background"
-        android:hint="username"
-        android:inputType="textEmailAddress" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:background="@drawable/bg_edittext_background"
-        android:hint="password"
-        android:inputType="textPassword" />
-
-    <Button
-        android:textColor="#ffff"
-        android:background="@drawable/login_button"
-        android:layout_marginTop="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="login" />
-
-    <Button
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#EDEDED"
-        android:text="forgot password?"
-        android:textAllCaps="false" />
-
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:layout_marginBottom="22dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="28dp"
+        android:paddingRight="28dp"
+        android:paddingBottom="90dp">
 
-        <View
-            android:layout_width="120dp"
-            android:layout_height="1dp"
-            android:background="#BADADADA" />
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="62dp"
+            android:src="@drawable/logo" />
 
-        <TextView
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/bg_edittext_background"
+            android:hint="username"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_edittext_background"
+            android:hint="password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/login_button"
+            android:text="login"
+            android:textColor="#ffff" />
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="forgot password?"
+            android:textAllCaps="false"
+            android:textColor="#EDEDED" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:textColor="#BADADADA"
-            android:layout_marginRight="8dp"
-            android:text="or" />
+            android:layout_marginTop="22dp"
+            android:layout_marginBottom="22dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <View
-            android:layout_width="120dp"
-            android:layout_height="1dp"
-            android:background="#BADADADA" />
+            <View
+                android:layout_width="120dp"
+                android:layout_height="1dp"
+                android:background="#BADADADA" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:text="or"
+                android:textColor="#BADADADA" />
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="1dp"
+                android:background="#BADADADA" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="22dp"
+                android:background="@drawable/bg_circle"
+                android:src="@drawable/ic_google" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_circle"
+                android:src="@drawable/ic_facebook" />
+
+        </LinearLayout>
 
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="22dp"
-            android:background="#1E88E5"
-            android:src="@mipmap/ic_launcher" />
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="#1E88E5"
-            android:src="@mipmap/ic_launcher" />
-
-
-    </LinearLayout>
-
-</LinearLayout>
+</ScrollView>
