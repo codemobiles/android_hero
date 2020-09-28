@@ -17,6 +17,14 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, "u: $username, p: $password", Toast.LENGTH_LONG)
                 .show()
         }
+
+        gmail_button.setOnClickListener {
+            Toast.makeText(applicationContext, "GMail", Toast.LENGTH_LONG).show()
+        }
+
+        facebook_button.setOnClickListener {
+            Toast.makeText(applicationContext, "Facebook", Toast.LENGTH_LONG).show()
+        }
     }
 
 }
