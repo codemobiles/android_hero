@@ -39,6 +39,9 @@ class HomeActivity : AppCompatActivity() {
     private fun setupViewPager() {
         binding.viewPager.adapter = sectionsPagerAdapter
 
+        binding.viewPager.setPageTransformer(HorizontalFlipTransformation())
+//        binding.viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
+
         // mark: the pager should be set before the tab layout.
         TabLayoutMediator(binding.tabs, binding.viewPager,
             TabLayoutMediator.TabConfigurationStrategy { tab, position ->
