@@ -4,23 +4,27 @@ import android.content.ContextWrapper
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.codemobiles.androidhero.databinding.ActivityMainBinding
 import com.pixplicity.easyprefs.library.Prefs
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         initPref()
         setupEventWidget()
     }
 
     private fun setupEventWidget() {
-        username_edittext.setText(Prefs.getString(PREF_USERNAME, ""))
-        password_edittext.setText(Prefs.getString(PREF_PASSWORD, ""))
+        binding.usernameEdittext.setText(Prefs.getString(PREF_USERNAME, ""))
+        binding.passwordEdittext.setText(Prefs.getString(PREF_PASSWORD, ""))
 
-        login_button.setOnClickListener {
+        binding.loginButton.setOnClickListener {
             val username = username_edittext.text.toString()
             val password: String = password_edittext.text.toString()
 
@@ -31,11 +35,11 @@ class MainActivity : AppCompatActivity() {
             Prefs.putString(PREF_PASSWORD, password)
         }
 
-        gmail_button.setOnClickListener {
+        binding.gmailButton.setOnClickListener {
             Toast.makeText(applicationContext, "GMail", Toast.LENGTH_LONG).show()
         }
 
-        facebook_button.setOnClickListener {
+        binding.facebookButton.setOnClickListener {
             Toast.makeText(applicationContext, "Facebook", Toast.LENGTH_LONG).show()
         }
     }
