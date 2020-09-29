@@ -6,17 +6,20 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.codemobiles.androidhero.ChartFragment
+import com.codemobiles.androidhero.HWFragment
 import com.codemobiles.androidhero.R
 import com.codemobiles.androidhero.StockFragment
 
 val TAB_TITLES = arrayOf<String>(
     "STOCK",
     "CHART",
+    "HW",
 )
 
 val TAB_ICONS = arrayOf<Int>(
     R.drawable.ic_stock,
-    R.drawable.ic_chart
+    R.drawable.ic_chart,
+    R.drawable.ic_product,
 )
 
 class SectionsPagerAdapter(
@@ -35,6 +38,9 @@ class SectionsPagerAdapter(
             }
             1 -> {
                 ChartFragment()
+            }
+            2 -> {
+                HWFragment()
             }
             else -> {
                 StockFragment()

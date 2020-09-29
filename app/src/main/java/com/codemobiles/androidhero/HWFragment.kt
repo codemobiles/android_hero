@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codemobiles.androidhero.databinding.CustomStockListBinding
 import com.codemobiles.androidhero.databinding.FragmentStockBinding
 
-class StockFragment : Fragment() {
+class HWFragment : Fragment() {
     private lateinit var binding: FragmentStockBinding
 
     override fun onCreateView(
@@ -43,4 +43,5 @@ class StockFragment : Fragment() {
     class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     }
+
 }
