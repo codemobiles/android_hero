@@ -1,6 +1,7 @@
 package com.codemobiles.androidhero
 
 import android.content.ContextWrapper
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -28,11 +29,13 @@ class MainActivity : AppCompatActivity() {
             val username = username_edittext.text.toString()
             val password: String = password_edittext.text.toString()
 
-            Toast.makeText(applicationContext, "u: $username, p: $password", Toast.LENGTH_LONG)
-                .show()
+            if(username == "admin@gmail.com" && password == "12345678"){
+                Prefs.putString(PREF_USERNAME, username)
+                Prefs.putString(PREF_PASSWORD, password)
 
-            Prefs.putString(PREF_USERNAME, username)
-            Prefs.putString(PREF_PASSWORD, password)
+                startActivity(Intent(applicationContext, HomeActivity::class.java))
+                finish()
+            }
         }
 
         binding.gmailButton.setOnClickListener {
