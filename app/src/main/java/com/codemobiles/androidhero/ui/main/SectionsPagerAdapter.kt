@@ -3,25 +3,33 @@ package com.codemobiles.androidhero.ui.main
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.codemobiles.androidhero.ChartFragment
 import com.codemobiles.androidhero.R
 import com.codemobiles.androidhero.StockFragment
 
-private val TAB_TITLES = arrayOf(
-    R.string.tab_text_1,
-    R.string.tab_text_2
+val TAB_TITLES = arrayOf<String>(
+    "STOCK",
+    "CHART",
 )
 
-/**
- * A [FragmentPagerAdapter] that returns a fragment corresponding to
- * one of the sections/tabs/pages.
- */
-class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
-    FragmentPagerAdapter(fm) {
+val TAB_ICONS = arrayOf<Int>(
+    R.drawable.ic_stock,
+    R.drawable.ic_chart
+)
 
-    override fun getItem(position: Int): Fragment {
-        return when(position){
+class SectionsPagerAdapter(
+    private val context: Context,
+    fm: FragmentManager,
+    lifecycle: Lifecycle
+) :
+    FragmentStateAdapter(fm, lifecycle) {
+
+    override fun getItemCount() = TAB_TITLES.size
+
+    override fun createFragment(position: Int): Fragment {
+        return when (position) {
             0 -> {
                 StockFragment()
             }
@@ -32,14 +40,5 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
                 StockFragment()
             }
         }
-    }
-
-    override fun getPageTitle(position: Int): CharSequence? {
-        return context.resources.getString(TAB_TITLES[position])
-    }
-
-    override fun getCount(): Int {
-        // Show 2 total pages.
-        return 2
     }
 }
