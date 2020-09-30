@@ -61,5 +61,18 @@ dependencies {
 // Load image network
 
 
+// parse json
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation 'com.beust:klaxon:5.0.1'
+}
+
+// parse json
+
+
 
 
