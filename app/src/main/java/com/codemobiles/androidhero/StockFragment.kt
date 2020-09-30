@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -81,6 +82,8 @@ class StockFragment : Fragment() {
 
             val image = APIClient.getImageURL() + product.image
             Glide.with(holder.binding.root).load(image).into(binding.imageviewProduct);
+
+            binding.imageviewProduct.setTag(binding.imageviewProduct.id, product.id)
         }
 
         override fun getItemCount() = productList.size
@@ -88,7 +91,12 @@ class StockFragment : Fragment() {
     }
 
     class CustomViewHolder(val binding: CustomStockListBinding) : RecyclerView.ViewHolder(binding.root) {
-
+        init {
+            binding.imageviewProduct.setOnClickListener { view ->
+                val productId = view.getTag(view.id) as Long
+                Toast.makeText(view.context, "$productId", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
 
