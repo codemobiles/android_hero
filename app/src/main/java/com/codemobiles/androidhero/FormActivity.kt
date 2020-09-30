@@ -1,18 +1,30 @@
 package com.codemobiles.androidhero
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.codemobiles.androidhero.databinding.ActivityFormBinding
+import com.codemobiles.androidhero.services.APIClient
+import com.codemobiles.androidhero.services.APIService
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import pl.aprilapps.easyphotopicker.ChooserType
-import pl.aprilapps.easyphotopicker.EasyImage
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import pl.aprilapps.easyphotopicker.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.BufferedInputStream
 import java.io.File
+import java.io.FileInputStream
+import java.io.IOException
 
 
 class FormActivity : AppCompatActivity() {
@@ -45,7 +57,7 @@ class FormActivity : AppCompatActivity() {
             ).withListener(object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport) { /* ... */
                     if (report.areAllPermissionsGranted()) {
-                        easyImage?.openCameraForImage(this@FormActivity)
+                        easyImage?.openGallery(this@FormActivity)
                         Toast.makeText(applicationContext, "####", Toast.LENGTH_SHORT).show()
                     } else {
                         //todo
@@ -60,4 +72,122 @@ class FormActivity : AppCompatActivity() {
                 }
             }).check()
     }
+
+
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        super.onActivityResult(requestCode, resultCode, data)
+        easyImage!!.handleActivityResult(
+            requestCode,
+            resultCode,
+            data,
+            this,
+            object : DefaultCallback() {
+                override fun onMediaFilesPicked(
+                    imageFiles: Array<MediaFile>,
+                    source: MediaSource
+                ) {
+                    onPhotosReturned(imageFiles)
+                }
+
+                override fun onImagePickerError(
+                    error: Throwable,
+                    source: MediaSource
+                ) {
+                    //Some error handling
+                    error.printStackTrace()
+                }
+
+                override fun onCanceled(source: MediaSource) {
+                    //Not necessary to remove any files manually anymore
+                }
+            })
+    }
+
+    private fun onPhotosReturned(returnedPhotos: Array<MediaFile>) {
+        val imagesFiles: List<MediaFile> =
+            ArrayList(listOf(*returnedPhotos))
+        file = imagesFiles[0].file
+
+        // test upload
+        val byteArray: ByteArray? = file?.let { file ->
+            covertByteArray(file)
+        }
+
+        upload(
+            "aaaa",
+            "10",
+            "30",
+            byteArray,
+            file?.name
+        )
+    }
+
+    private fun covertByteArray(file: File): ByteArray {
+        val size = file.length().toInt()
+        val bytes = ByteArray(size)
+        try {
+            val buf =
+                BufferedInputStream(FileInputStream(file))
+            buf.read(bytes, 0, bytes.size)
+            buf.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return bytes
+    }
+
+    private fun upload(
+        name: String,
+        price: String,
+        stock: String,
+        byteArray: ByteArray?,
+        fileName: String?
+    ) {
+        // Sent Message
+        val bodyText = HashMap<String, RequestBody>().apply {
+            val mediaType = MediaType.parse(MEDIA_TYPE_TEXT)
+            this[API_PRODUCT_FORM_NAME] =
+                RequestBody.create(mediaType, if (name.isEmpty()) "-" else name)
+            this[API_PRODUCT_FORM_PRICE] =
+                RequestBody.create(mediaType, if (price.isEmpty()) "0" else price)
+            this[API_PRODUCT_FORM_STOCK] =
+                RequestBody.create(mediaType, if (stock.isEmpty()) "0" else stock)
+        }
+
+        // Send Image
+        val bodyImage: MultipartBody.Part? = byteArray?.let {
+            val mediaType = MediaType.parse(MEDIA_TYPE_IMAGE)
+            val reqFile = RequestBody.create(mediaType, byteArray)
+            MultipartBody.Part.createFormData(API_PRODUCT_FORM_PHOTO, fileName, reqFile)
+        }
+
+        val call: Call<ResponseBody> =
+            APIClient.getClient().create(APIService::class.java).addProduct(bodyText, bodyImage)
+
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
+                        try {
+                            finish()
+                        } catch (e: IOException) {
+                            Toast.makeText(applicationContext, e.message, Toast.LENGTH_LONG).show()
+                        }
+                    }
+                } else {
+                    Toast.makeText(applicationContext, "network failure", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+
 }
