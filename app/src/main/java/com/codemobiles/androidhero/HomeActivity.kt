@@ -1,6 +1,7 @@
 package com.codemobiles.androidhero
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
@@ -32,7 +33,9 @@ class HomeActivity : AppCompatActivity() {
     private fun setupEventWidget() {
         binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+                .setAction("Action") {
+                    startActivity(Intent(applicationContext, FormActivity::class.java))
+                }.show()
         }
     }
 
