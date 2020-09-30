@@ -43,6 +43,8 @@ dependencies {
 
     // my dependencies
     implementation 'com.pixplicity.easyprefs:library:1.9.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
 }
 
 

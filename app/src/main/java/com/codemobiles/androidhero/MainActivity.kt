@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             val username = username_edittext.text.toString()
             val password: String = password_edittext.text.toString()
 
-            if(username == "admin@gmail.com" && password == "12345678"){
+            if (username == "admin@gmail.com" && password == "12345678") {
                 Prefs.putString(PREF_USERNAME, username)
                 Prefs.putString(PREF_PASSWORD, password)
 

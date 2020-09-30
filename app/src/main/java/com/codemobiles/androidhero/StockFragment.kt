@@ -10,6 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.codemobiles.androidhero.databinding.CustomStockListBinding
 import com.codemobiles.androidhero.databinding.FragmentStockBinding
+import com.codemobiles.androidhero.models.ProductAllResponse
+import com.codemobiles.androidhero.services.APIClient
+import com.codemobiles.androidhero.services.APIService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class StockFragment : Fragment() {
     private lateinit var binding: FragmentStockBinding
@@ -21,31 +27,57 @@ class StockFragment : Fragment() {
         binding = FragmentStockBinding.inflate(layoutInflater)
 
         // important
-        binding.recyclerview.adapter = StockAdapter()
+        binding.recyclerview.adapter = StockAdapter(listOf())
         binding.recyclerview.layoutManager = GridLayoutManager(context, 2)
         // binding.recyclerview.addItemDecoration(DividerItemDecoration(context, LinearLayout.VERTICAL ))
         binding.recyclerview.addItemDecoration(GridSpacingItemDecoration(2, 20, true))
 
+        feedNetwork()
+
         return binding.root
     }
 
-    class StockAdapter : RecyclerView.Adapter<CustomViewHolder>() {
+    fun feedNetwork(){
+        APIClient.getClient().create(APIService::class.java).getProducts().let { call ->
+            call.enqueue(object : Callback<List<ProductAllResponse>> {
+                override fun onFailure(call: Call<List<ProductAllResponse>>, t: Throwable) {
+
+                }
+
+                override fun onResponse(
+                    call: Call<List<ProductAllResponse>>,
+                    response: Response<List<ProductAllResponse>>
+                ) {
+                    if(response.isSuccessful){
+                        val result: List<ProductAllResponse> = response.body()!!
+                        binding.recyclerview.adapter = StockAdapter(result)
+                    }
+                }
+            })
+        }
+    }
+
+    // primary class
+    class StockAdapter(var productList: List<ProductAllResponse>) : RecyclerView.Adapter<CustomViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
             val binding = CustomStockListBinding.inflate(LayoutInflater.from(parent.context))
             return CustomViewHolder(binding)
         }
 
         override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-            val binding = holder.binding
-            binding.textviewName.text = "title $position"
-            binding.textviewDetail.text = "codemobiles cmdev"
-            binding.textviewPrice.text = "999"
-            binding.textviewStock.text = "100"
+            val product = productList[position]
 
-            Glide.with(holder.binding.root).load("https://sites.google.com/site/funnycatmeawww/_/rsrc/1422326075261/home/6997052-funny-cat.jpg?height=675&width=1200").into(binding.imageviewProduct);
+            val binding = holder.binding
+            binding.textviewName.text = product.name
+            binding.textviewDetail.text = "codemobiles android dev"
+            binding.textviewPrice.text = product.price.toString()
+            binding.textviewStock.text = product.stock.toString()
+
+            val image = APIClient.getImageURL() + product.image
+            Glide.with(holder.binding.root).load(image).into(binding.imageviewProduct);
         }
 
-        override fun getItemCount() = 100
+        override fun getItemCount() = productList.size
 
     }
 
