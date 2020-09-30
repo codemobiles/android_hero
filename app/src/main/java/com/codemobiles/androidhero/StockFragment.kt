@@ -22,6 +22,8 @@ class StockFragment : Fragment() {
         // important
         binding.recyclerview.adapter = StockAdapter()
         binding.recyclerview.layoutManager = GridLayoutManager(context, 2)
+        // binding.recyclerview.addItemDecoration(DividerItemDecoration(context, LinearLayout.VERTICAL ))
+        binding.recyclerview.addItemDecoration(GridSpacingItemDecoration(2, 20, true))
 
         return binding.root
     }
@@ -29,18 +31,23 @@ class StockFragment : Fragment() {
     class StockAdapter : RecyclerView.Adapter<CustomViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
             val binding = CustomStockListBinding.inflate(LayoutInflater.from(parent.context))
-            return CustomViewHolder(binding.root)
+            return CustomViewHolder(binding)
         }
 
         override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-
+            val binding = holder.binding
+            binding.textviewName.text = "title $position"
+            binding.textviewDetail.text = "codemobiles cmdev"
+            binding.textviewPrice.text = "999"
+            binding.textviewStock.text = "100"
         }
 
         override fun getItemCount() = 100
 
     }
 
-    class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class CustomViewHolder(val binding: CustomStockListBinding) : RecyclerView.ViewHolder(binding.root) {
 
     }
 }
+
