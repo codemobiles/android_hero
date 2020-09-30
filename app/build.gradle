@@ -48,7 +48,6 @@ dependencies {
     implementation 'com.karumi:dexter:6.2.1'
 }
 
-
 // Load image network
 
 repositories {
@@ -76,6 +75,18 @@ dependencies {
 
 // parse json
 
+
+// open camera and gallery
+
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies{
+    implementation 'com.github.jkwiecien:EasyImage:3.0.4'
+}
+
+// open camera and gallery
 
 
 
