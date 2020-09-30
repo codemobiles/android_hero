@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.codemobiles.androidhero.databinding.CustomStockListBinding
 import com.codemobiles.androidhero.databinding.FragmentStockBinding
 
@@ -40,6 +41,8 @@ class StockFragment : Fragment() {
             binding.textviewDetail.text = "codemobiles cmdev"
             binding.textviewPrice.text = "999"
             binding.textviewStock.text = "100"
+
+            Glide.with(holder.binding.root).load("https://sites.google.com/site/funnycatmeawww/_/rsrc/1422326075261/home/6997052-funny-cat.jpg?height=675&width=1200").into(binding.imageviewProduct);
         }
 
         override fun getItemCount() = 100
