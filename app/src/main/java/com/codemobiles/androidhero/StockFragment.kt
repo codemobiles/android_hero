@@ -32,16 +32,20 @@ class StockFragment : Fragment() {
         // binding.recyclerview.addItemDecoration(DividerItemDecoration(context, LinearLayout.VERTICAL ))
         binding.recyclerview.addItemDecoration(GridSpacingItemDecoration(2, 20, true))
 
+        binding.swipeRefresh.setOnRefreshListener {
+            feedNetwork()
+        }
+
         feedNetwork()
 
         return binding.root
     }
 
-    fun feedNetwork(){
+    private fun feedNetwork(){
         APIClient.getClient().create(APIService::class.java).getProducts().let { call ->
             call.enqueue(object : Callback<List<ProductAllResponse>> {
                 override fun onFailure(call: Call<List<ProductAllResponse>>, t: Throwable) {
-
+                    binding.swipeRefresh.isRefreshing = false
                 }
 
                 override fun onResponse(
@@ -52,6 +56,8 @@ class StockFragment : Fragment() {
                         val result: List<ProductAllResponse> = response.body()!!
                         binding.recyclerview.adapter = StockAdapter(result)
                     }
+
+                    binding.swipeRefresh.isRefreshing = false
                 }
             })
         }
