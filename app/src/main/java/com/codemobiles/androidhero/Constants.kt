@@ -4,7 +4,7 @@ package com.codemobiles.androidhero
 const val PREF_USERNAME = "username"
 const val PREF_PASSWORD = "password"
 
-const val BASE_URL = "https://cmpos-demo.herokuapp.com/"
+const val BASE_URL = "http://192.168.0.171:1150/"
 const val IMAGE_URL = "images"
 const val API_PRODUCT = "product"
 const val API_PRODUCT_PARAMS_ID = "id"
