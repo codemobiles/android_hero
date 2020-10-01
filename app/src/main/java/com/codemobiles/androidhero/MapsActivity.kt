@@ -3,7 +3,6 @@ package com.codemobiles.androidhero
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.codemobiles.androidhero.databinding.ActivityMapsBinding
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
@@ -23,15 +22,21 @@ class MapsActivity : AppCompatActivity() {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync { googleMap ->
-
             mMap = googleMap
 
             // Add a marker in Sydney and move the camera
-            val sydney = LatLng(-34.0, 151.0)
-            mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+            val dummy1 = LatLng(13.7438306, 100.5151677)
+            val dummy2 = LatLng(13.743330, 100.523193)
+            val dummy3 = LatLng(13.743101, 100.526712)
 
+            addMarker(dummy1)
+            addMarker(dummy2)
+            addMarker(dummy3)
         }
+    }
+
+    private fun addMarker(latLng: LatLng) {
+        mMap.addMarker(MarkerOptions().position(latLng).title("Marker in Sydney"))
     }
 
 }
