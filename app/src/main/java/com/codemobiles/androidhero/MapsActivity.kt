@@ -12,6 +12,7 @@ import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.karumi.dexter.Dexter
@@ -61,7 +62,13 @@ class MapsActivity : AppCompatActivity() {
     }
 
     private fun addMarker(latLng: LatLng) {
-        mMap.addMarker(MarkerOptions().position(latLng).title("Marker in Sydney"))
+        val marker = MarkerOptions()
+        marker.position(latLng)
+        marker.title("codemobiles")
+        marker.snippet("android core")
+        marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.logo))
+
+        mMap.addMarker(marker)
     }
 
     private fun checkRuntimePermission() {
