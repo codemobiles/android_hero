@@ -1,5 +1,7 @@
 package com.codemobiles.androidhero
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.codemobiles.androidhero.databinding.ActivityMapsBinding
@@ -8,6 +10,11 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 
 class MapsActivity : AppCompatActivity() {
 
@@ -25,6 +32,7 @@ class MapsActivity : AppCompatActivity() {
         mapFragment.getMapAsync { googleMap ->
             mMap = googleMap
             setupMap()
+            checkRuntimePermission()
         }
     }
 
@@ -41,6 +49,27 @@ class MapsActivity : AppCompatActivity() {
 
     private fun addMarker(latLng: LatLng) {
         mMap.addMarker(MarkerOptions().position(latLng).title("Marker in Sydney"))
+    }
+
+    private fun checkRuntimePermission() {
+        Dexter.withContext(this)
+            .withPermissions(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+            ).withListener(object : MultiplePermissionsListener {
+                @SuppressLint("MissingPermission")
+                override fun onPermissionsChecked(report: MultiplePermissionsReport) { /* ... */
+                    if (report.areAllPermissionsGranted()) {
+                        mMap.isMyLocationEnabled = true
+                    }
+                }
+
+                override fun onPermissionRationaleShouldBeShown(
+                    permissions: List<PermissionRequest?>?,
+                    token: PermissionToken?
+                ) {
+                    token!!.continuePermissionRequest()
+                }
+            }).check()
     }
 
 }
