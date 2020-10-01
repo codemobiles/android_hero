@@ -3,8 +3,11 @@ package com.codemobiles.androidhero
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.codemobiles.androidhero.databinding.ActivityFormBinding
 import com.codemobiles.androidhero.services.APIClient
 import com.codemobiles.androidhero.services.APIService
@@ -29,6 +32,7 @@ import java.io.IOException
 
 class FormActivity : AppCompatActivity() {
 
+    private var permissionGranted: Boolean = false
     private lateinit var binding: ActivityFormBinding
     private var easyImage: EasyImage? = null
     private var file: File? = null
@@ -47,6 +51,39 @@ class FormActivity : AppCompatActivity() {
             .build()
 
         checkRuntimePermission()
+        setupEventWidget()
+    }
+
+    private fun setupEventWidget() {
+        binding.camera.setOnClickListener {
+            if (permissionGranted) {
+                easyImage?.openCameraForImage(this@FormActivity)
+            } else {
+                //todo
+            }
+        }
+
+        binding.gallery.setOnClickListener {
+            if (permissionGranted) {
+                easyImage?.openGallery(this@FormActivity)
+            } else {
+                //todo
+            }
+        }
+
+        binding.productSubmit.setOnClickListener {
+            val byteArray: ByteArray? = file?.let { file ->
+                covertByteArray(file)
+            }
+
+            upload(
+                binding.productEdittextName.text.toString(),
+                binding.productEdittextPrice.text.toString(),
+                binding.productEdittextStock.text.toString(),
+                byteArray,
+                file?.name
+            )
+        }
     }
 
     private fun checkRuntimePermission() {
@@ -57,10 +94,10 @@ class FormActivity : AppCompatActivity() {
             ).withListener(object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport) { /* ... */
                     if (report.areAllPermissionsGranted()) {
-                        easyImage?.openGallery(this@FormActivity)
+                        permissionGranted = true
                         Toast.makeText(applicationContext, "####", Toast.LENGTH_SHORT).show()
                     } else {
-                        //todo
+                        permissionGranted = false
                     }
                 }
 
@@ -112,18 +149,11 @@ class FormActivity : AppCompatActivity() {
             ArrayList(listOf(*returnedPhotos))
         file = imagesFiles[0].file
 
-        // test upload
-        val byteArray: ByteArray? = file?.let { file ->
-            covertByteArray(file)
-        }
+        Glide.with(this).load(file).into(binding.productImageview)
+        binding.productImageview.visibility = View.VISIBLE
 
-        upload(
-            "aaaa",
-            "10",
-            "30",
-            byteArray,
-            file?.name
-        )
+        binding.photoLayout.gravity = Gravity.END
+        binding.photoLayout.setPadding(0, 12, 12, 0)
     }
 
     private fun covertByteArray(file: File): ByteArray {
@@ -165,28 +195,33 @@ class FormActivity : AppCompatActivity() {
             MultipartBody.Part.createFormData(API_PRODUCT_FORM_PHOTO, fileName, reqFile)
         }
 
-        val call: Call<ResponseBody> =
-            APIClient.getClient().create(APIService::class.java).addProduct(bodyText, bodyImage)
-
-        call.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful) {
-                    if (response.body() != null) {
-                        try {
-                            finish()
-                        } catch (e: IOException) {
-                            Toast.makeText(applicationContext, e.message, Toast.LENGTH_LONG).show()
+        APIClient.getClient().create(APIService::class.java).addProduct(bodyText, bodyImage)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            try {
+                                finish()
+                            } catch (e: IOException) {
+                                Toast.makeText(applicationContext, e.message, Toast.LENGTH_LONG)
+                                    .show()
+                            }
                         }
+                    } else {
+                        Toast.makeText(applicationContext, "network failure", Toast.LENGTH_LONG)
+                            .show()
                     }
-                } else {
-                    Toast.makeText(applicationContext, "network failure", Toast.LENGTH_LONG).show()
                 }
-            }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
-            }
-        })
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
+                }
+            })
+
+
     }
 
 

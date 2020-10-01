@@ -42,9 +42,9 @@ class StockFragment : Fragment() {
         return binding.root
     }
 
-    private fun feedNetwork(){
-        APIClient.getClient().create(APIService::class.java).getProducts().let { call ->
-            call.enqueue(object : Callback<List<ProductAllResponse>> {
+    private fun feedNetwork() {
+        APIClient.getClient().create(APIService::class.java).getProducts()
+            .enqueue(object : Callback<List<ProductAllResponse>> {
                 override fun onFailure(call: Call<List<ProductAllResponse>>, t: Throwable) {
                     binding.swipeRefresh.isRefreshing = false
                 }
@@ -53,7 +53,7 @@ class StockFragment : Fragment() {
                     call: Call<List<ProductAllResponse>>,
                     response: Response<List<ProductAllResponse>>
                 ) {
-                    if(response.isSuccessful){
+                    if (response.isSuccessful) {
                         val result: List<ProductAllResponse> = response.body()!!
                         binding.recyclerview.adapter = StockAdapter(result)
                     }
@@ -61,11 +61,11 @@ class StockFragment : Fragment() {
                     binding.swipeRefresh.isRefreshing = false
                 }
             })
-        }
     }
 
     // primary class
-    class StockAdapter(var productList: List<ProductAllResponse>) : RecyclerView.Adapter<CustomViewHolder>() {
+    class StockAdapter(var productList: List<ProductAllResponse>) :
+        RecyclerView.Adapter<CustomViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
             val binding = CustomStockListBinding.inflate(LayoutInflater.from(parent.context))
             return CustomViewHolder(binding)
@@ -90,7 +90,8 @@ class StockFragment : Fragment() {
 
     }
 
-    class CustomViewHolder(val binding: CustomStockListBinding) : RecyclerView.ViewHolder(binding.root) {
+    class CustomViewHolder(val binding: CustomStockListBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
             binding.imageviewProduct.setOnClickListener { view ->
                 val productId = view.getTag(view.id) as Long
