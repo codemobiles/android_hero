@@ -7,6 +7,14 @@
     android:orientation="vertical"
     tools:context=".FormActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,11 +27,11 @@
             android:id="@+id/product_edittext_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nextFocusDown="@+id/product_edittext_price"
             android:background="@drawable/bg_edittext_border"
             android:hint="name"
             android:inputType="text"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:nextFocusDown="@+id/product_edittext_price" />
 
         <LinearLayout
             android:layout_width="match_parent"
