@@ -2,6 +2,8 @@ package com.codemobiles.androidhero
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
@@ -20,6 +22,7 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+
 
 private const val FASTEST_INTERVAL: Long = 1000
 private const val UPDATE_INTERVAL: Long = 3000
@@ -47,7 +50,18 @@ class MapsActivity : AppCompatActivity() {
             mMap = googleMap
             setupMap()
             checkRuntimePermission()
+            pinDatabase()
         }
+    }
+
+    private fun pinDatabase() {
+        val result = arrayListOf<LatLng>(
+            LatLng(13.7438306, 100.5151677),
+            LatLng(13.743330, 100.523193),
+            LatLng(13.743101, 100.526712),
+        )
+
+        result.forEach{ latLng -> addMarker(latLng)}
     }
 
     private fun setupMap() {
@@ -66,9 +80,19 @@ class MapsActivity : AppCompatActivity() {
         marker.position(latLng)
         marker.title("codemobiles")
         marker.snippet("android core")
-        marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.logo))
+        marker.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("logo", 170, 170)))
 
         mMap.addMarker(marker)
+    }
+
+    private fun resizeMapIcons(iconName: String?, width: Int, height: Int): Bitmap? {
+        val imageBitmap = BitmapFactory.decodeResource(
+            resources, resources.getIdentifier(
+                iconName, "drawable",
+                packageName
+            )
+        )
+        return Bitmap.createScaledBitmap(imageBitmap, width, height, false)
     }
 
     private fun checkRuntimePermission() {
@@ -80,7 +104,7 @@ class MapsActivity : AppCompatActivity() {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport) { /* ... */
                     if (report.areAllPermissionsGranted()) {
                         mMap.isMyLocationEnabled = true
-                        trackLocation()
+                        //trackLocation()
                     }
                 }
 
