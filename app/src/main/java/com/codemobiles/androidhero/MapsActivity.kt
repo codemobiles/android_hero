@@ -2,6 +2,7 @@ package com.codemobiles.androidhero
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Location
@@ -73,6 +74,15 @@ class MapsActivity : AppCompatActivity() {
         mMap.mapType = GoogleMap.MAP_TYPE_HYBRID
 
         mMap.uiSettings.isZoomControlsEnabled = true
+
+        mMap.setOnMarkerClickListener {
+            val _intent = Intent(applicationContext, StreetViewActivity::class.java)
+            _intent.putExtra("lat", latLng.latitude)
+            _intent.putExtra("lng", latLng.longitude)
+            startActivity(_intent)
+
+            true
+        }
     }
 
     private fun addMarker(latLng: LatLng) {
