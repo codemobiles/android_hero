@@ -31,11 +31,15 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupEventWidget() {
-        binding.fab.setOnClickListener { view ->
+        binding.fabForm.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action") {
                     startActivity(Intent(applicationContext, FormActivity::class.java))
                 }.show()
+        }
+
+        binding.fabMap.setOnClickListener {
+            startActivity(Intent(applicationContext, MapsActivity::class.java))
         }
     }
 
