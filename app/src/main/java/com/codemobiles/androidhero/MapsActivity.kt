@@ -75,10 +75,10 @@ class MapsActivity : AppCompatActivity() {
 
         mMap.uiSettings.isZoomControlsEnabled = true
 
-        mMap.setOnMarkerClickListener {
+        mMap.setOnMarkerClickListener { marker ->
             val _intent = Intent(applicationContext, StreetViewActivity::class.java)
-            _intent.putExtra("lat", latLng.latitude)
-            _intent.putExtra("lng", latLng.longitude)
+            _intent.putExtra("lat", marker.position.latitude)
+            _intent.putExtra("lng", marker.position.longitude)
             startActivity(_intent)
 
             true

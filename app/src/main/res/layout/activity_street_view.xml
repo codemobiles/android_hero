@@ -1,10 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/street_view"
-    android:name="com.google.android.gms.maps.SupportStreetViewPanoramaFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StreetViewActivity" />
+    tools:context=".StreetViewActivity" >
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+
+    <fragment
+        android:layout_below="@id/toolbar"
+        android:id="@+id/street_view"
+        android:name="com.google.android.gms.maps.SupportStreetViewPanoramaFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/navigator"
+        tools:context=".StreetViewActivity" />
+
+    <Button
+        android:id="@+id/navigator"
+        android:text="navigator"
+        android:textColor="#ffff"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"/>
+
+
+</RelativeLayout>
