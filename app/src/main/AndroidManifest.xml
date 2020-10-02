@@ -42,6 +42,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".StreetViewActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -57,17 +58,23 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"/>
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".FormActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
+
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
