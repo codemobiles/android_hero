@@ -90,7 +90,7 @@ class MapsActivity : AppCompatActivity() {
         marker.position(latLng)
         marker.title("codemobiles")
         marker.snippet("android core")
-        marker.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("logo", 170, 170)))
+        marker.icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("pin", 170, 170)))
 
         mMap.addMarker(marker)
     }
