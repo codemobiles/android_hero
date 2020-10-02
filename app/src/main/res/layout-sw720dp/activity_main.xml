@@ -110,6 +110,11 @@
 
         </LinearLayout>
 
+        <fragment
+            android:id="@+id/chart_fragment"
+            android:name="com.codemobiles.androidhero.ChartFragment"
+            android:layout_width="match_parent"
+            android:layout_height="550dp"/>
 
     </LinearLayout>
 

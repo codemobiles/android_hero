@@ -92,3 +92,15 @@ dependencies{
 
 
 
+// MPAndroidChart - Chart library for Android --- Begin
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
+}
+// MPAndroidChart - chart library for Android --- End
+
+
+
