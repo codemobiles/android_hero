@@ -9,14 +9,17 @@ import android.location.Location
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.codemobiles.androidhero.databinding.ActivityMapsBinding
+import com.codemobiles.androidhero.databinding.CustomInfoBinding
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -50,8 +53,17 @@ class MapsActivity : AppCompatActivity() {
         mapFragment.getMapAsync { googleMap ->
             mMap = googleMap
             setupMap()
+            setupEventWidget()
             checkRuntimePermission()
             pinDatabase()
+        }
+    }
+
+    private fun setupEventWidget() {
+        binding.tracking.visibility = View.GONE
+        binding.tracking.setOnClickListener {
+            mMap.clear()
+            trackLocation()
         }
     }
 
@@ -81,8 +93,36 @@ class MapsActivity : AppCompatActivity() {
             _intent.putExtra("lng", marker.position.longitude)
             startActivity(_intent)
 
+            marker.showInfoWindow()
+
             true
         }
+
+        mMap.setOnInfoWindowClickListener { marker ->
+            val _intent = Intent(applicationContext, StreetViewActivity::class.java)
+            _intent.putExtra("lat", marker.position.latitude)
+            _intent.putExtra("lng", marker.position.longitude)
+            startActivity(_intent)
+        }
+
+        mMap.setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter {
+            override fun getInfoWindow(marker: Marker): View? {
+                 return null
+            }
+
+            override fun getInfoContents(marker: Marker): View? {
+                val binding = CustomInfoBinding.inflate(layoutInflater)
+
+                binding.infoTitle.text = "Codemobiles company"
+                binding.infoSubTitle.text = "Training Center"
+                binding.infoImage.setImageResource(R.drawable.logo)
+
+                return binding.root
+            }
+        })
+
+
+
     }
 
     private fun addMarker(latLng: LatLng) {
@@ -114,7 +154,7 @@ class MapsActivity : AppCompatActivity() {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport) { /* ... */
                     if (report.areAllPermissionsGranted()) {
                         mMap.isMyLocationEnabled = true
-                        //trackLocation()
+                        binding.tracking.visibility = View.VISIBLE
                     }
                 }
 
